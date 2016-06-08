@@ -2,8 +2,33 @@ from pawns import Pawn, King, Bishop, Knight, Rook
 
 class Board(object):
     def __init__(self):
-        self.board = [['.' for _ in xrange(8)] for _ in xrange(8)]
         self.pawns = {'white': [], 'black': []}
+        self.__clear_board()
+
+    def __clear_board(self):
+        self.board = [['.' for _ in xrange(8)] for _ in xrange(8)]
+
+    def __create_white_pawns(self):
+        Pawn('white', ('e', '2'), board=self)
+        Pawn('white', ('f', '2'), board=self)
+        Pawn('white', ('g', '2'), board=self)
+        Pawn('white', ('h', '2'), board=self)
+
+        King('white', ('e', '1'), board=self)
+        Bishop('white', ('f', '1'), board=self)
+        Knight('white', ('g', '1'), board=self)
+        Rook('white', ('h', '1'), board=self)
+
+    def __create_black_pawns(self):
+        Pawn('black', ('e', '7'), board=self)
+        Pawn('black', ('f', '7'), board=self)
+        Pawn('black', ('g', '7'), board=self)
+        Pawn('black', ('h', '7'), board=self)
+
+        King('black', ('e', '8'), board=self)
+        Bishop('black', ('f', '8'), board=self)
+        Knight('black', ('g', '8'), board=self)
+        Rook('black', ('h', '8'), board=self)
 
     def pos_on_board(self, x, y):
         # a1 -> (0, 7), h8 -> (7, 0)
@@ -13,7 +38,6 @@ class Board(object):
         # (0, 1) -> ('a', '1'), (7, 0) -> ('h', '8')
         x, y = pos
         return (chr(y + ord('a')), chr(ord('8') - x))
-
 
     def is_player_pawn(self, color, pawn):
         return pawn in self.pawns[color]  # if pawn is dead it will return false
@@ -45,30 +69,9 @@ class Board(object):
         self.board[x][y] = pawn
 
     def reset_board(self):
+        self.__clear_board()
         self.__create_white_pawns()
         self.__create_black_pawns()
-
-    def __create_white_pawns(self):
-        Pawn('white', ('e', '2'), board=self)
-        Pawn('white', ('f', '2'), board=self)
-        Pawn('white', ('g', '2'), board=self)
-        Pawn('white', ('h', '2'), board=self)
-
-        King('white', ('e', '1'), board=self)
-        Bishop('white', ('f', '1'), board=self)
-        Knight('white', ('g', '1'), board=self)
-        Rook('white', ('h', '1'), board=self)
-
-    def __create_black_pawns(self):
-        Pawn('black', ('e', '7'), board=self)
-        Pawn('black', ('f', '7'), board=self)
-        Pawn('black', ('g', '7'), board=self)
-        Pawn('black', ('h', '7'), board=self)
-
-        King('black', ('e', '8'), board=self)
-        Bishop('black', ('f', '8'), board=self)
-        Knight('black', ('g', '8'), board=self)
-        Rook('black', ('h', '8'), board=self)
 
     def move_pawn(self, start, end):
         pawn = self.get_pawn(end)
